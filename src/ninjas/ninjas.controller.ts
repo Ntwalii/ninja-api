@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { NinjasService } from './ninjas.service';
 import { CreateNinjaDto } from './dto/create-ninja.dto';
@@ -28,7 +29,11 @@ export class NinjasController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ninjasService.findOne(+id);
+    try {
+      return this.ninjasService.findOne(+id);
+    } catch (e) {
+      throw new NotFoundException();
+    }
   }
 
   @Patch(':id')
